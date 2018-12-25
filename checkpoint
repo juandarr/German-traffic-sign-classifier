@@ -1,2 +1,2 @@
-model_checkpoint_path: "Cnet"
-all_model_checkpoint_paths: "Cnet"
+model_checkpoint_path: "Cnet_3conv_gray"
+all_model_checkpoint_paths: "Cnet_3conv_gray"
