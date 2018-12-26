@@ -10,10 +10,10 @@
   - [a. Load the data set and summarize](#a.-load-the-data-set-and-summarize)
   - [b. Explore and visualize the data set](#b.-explore-and-visualize-the-data-set)
 - [2. Design, train, and test a model architecture](#2.-design,-train,-and-test-a-model-architecture)
-  - [a. Image preprocessing and augmentation](#1-image-preprocessing-and-augmentation)
-  - [b. Final model architecture](#2-final-model-architecture)
-  - [c. Model training](#3-model-training)
-  - [d. Final results and discussion](#4-final-results-and-discussion)
+  - [a. Data augmentation and image preprocessing](#a.-data-augmentation-and-image-preprocessing)
+  - [b. Final model architecture](#b.-final-model-architecture)
+  - [c. Model training](#c.-model-training)
+  - [d. Final results and discussion](#d.-final-results-and-discussion)
 - [3. Test a model on new images](#test-a-model-on-new-images)
   - [1. Custom traffic sign images](#1-custom-traffic-sign-images)
   - [2. Model performace on the custom images](#2-model-performace-on-the-custom-images)
@@ -23,14 +23,51 @@
 
 [//]: # (Image References)
 
-[image1]: ./examples/visualization.jpg "Visualization"
-[image2]: ./examples/grayscale.jpg "Grayscaling"
-[image3]: ./examples/random_noise.jpg "Random Noise"
-[image4]: ./examples/placeholder.png "Traffic Sign 1"
-[image5]: ./examples/placeholder.png "Traffic Sign 2"
-[image6]: ./examples/placeholder.png "Traffic Sign 3"
-[image7]: ./examples/placeholder.png "Traffic Sign 4"
-[image8]: ./examples/placeholder.png "Traffic Sign 5"
+[image1]: ./images/overview_training_images.png "Visualization"
+[image2]: ./images/class_distribution.png "Class distribution"
+[image3]: ./images/class_0.png "Class 0"
+[image4]: ./images/class_1.png "Class 1"
+[image5]: ./images/class_2.png "Class 2"
+[image6]: ./images/class_3.png "Class 3"
+[image7]: ./images/class_4.png "Class 4"
+[image8]: ./images/class_5.png "Class 5"
+[image9]: ./images/class_6.png "Class 6"
+[image10]: ./images/class_7.png "Class 7"
+[image11]: ./images/class_8.png "Class 8"
+[image12]: ./images/class_9.png "Class 9"
+[image13]: ./images/class_10.png "Class 10"
+[image14]: ./images/class_11.png "Class 11"
+[image15]: ./images/class_12.png "Class 12"
+[image16]: ./images/class_13.png "Class 13"
+[image17]: ./images/class_14.png "Class 14"
+[image18]: ./images/class_15.png "Class 15"
+[image19]: ./images/class_16.png "Class 16"
+[image20]: ./images/class_17.png "Class 17"
+[image21]: ./images/class_18.png "Class 18"
+[image22]: ./images/class_19.png "Class 19"
+[image23]: ./images/class_20.png "Class 20"
+[image24]: ./images/class_21.png "Class 21"
+[image25]: ./images/class_22.png "Class 22"
+[image26]: ./images/class_23.png "Class 23"
+[image27]: ./images/class_24.png "Class 24"
+[image28]: ./images/class_25.png "Class 25"
+[image29]: ./images/class_26.png "Class 26"
+[image30]: ./images/class_27.png "Class 27"
+[image31]: ./images/class_28.png "Class 28"
+[image32]: ./images/class_29.png "Class 29"
+[image33]: ./images/class_30.png "Class 30"
+[image34]: ./images/class_31.png "Class 31"
+[image35]: ./images/class_32.png "Class 32"
+[image36]: ./images/class_33.png "Class 33"
+[image37]: ./images/class_34.png "Class 34"
+[image38]: ./images/class_35.png "Class 35"
+[image39]: ./images/class_36.png "Class 36"
+[image40]: ./images/class_37.png "Class 37"
+[image41]: ./images/class_38.png "Class 38"
+[image42]: ./images/class_39.png "Class 39"
+[image43]: ./images/class_40.png "Class 40"
+[image44]: ./images/class_41.png "Class 41"
+[image45]: ./images/class_42.png "Class 42"
 
 ---
 ## 1. Data set summary and exploration
@@ -97,15 +134,118 @@ Class ID | Sign name
 
 ### **b. Explore and visualize the data set** 
 
-#### Include an exploratory visualization of the dataset.
 
-Here is an exploratory visualization of the data set. It is a bar chart showing how the data ...
+Here is an exploratory visualization of the data set.
 
 ![alt text][image1]
 
-#### 2. Design, train and test a model architecture
+The code randomly selects images from the training set and plot them in the canvas. You can see the image and the label that defines it.
 
-### Design and Test a Model Architecture
+The following chart shows the class distribution among the total set of training images.
+
+![alt text][image2]
+
+As you can see, a lot of classes have a sample size of less than 500. This is problematic since compared to other classes with 1000 or more samples, that class will get less representative data to train a robust classifier able to discriminate it in scenarios where inputs are different from those in the samples. One way to solve is data augmentation, which will use to multiply the number of representative data for those classes, and will be used in all classes to create images with significant variations in lightness, image position, image scale and image rotation. 
+
+Finally, lets explore the images representing each class. An exploration of each class will allows us to get an idea of the quality of the data and the kind of transformations we could apply to improve the performance of the training/testing pipelines. 
+
+#### **Label 0**
+![alt text][image3]
+#### **Label 1**
+![alt text][image4]
+#### **Label 2**
+![alt text][image5]
+#### **Label 3**
+![alt text][image6]
+#### **Label 4**
+![alt text][image7]
+#### **Label 5**
+![alt text][image8]
+#### **Label 6**
+![alt text][image9]
+#### **Label 7**
+![alt text][image10]
+#### **Label 8**
+![alt text][image11]
+#### **Label 9**
+![alt text][image12]
+#### **Label 10**
+![alt text][image13]
+#### **Label 11**
+![alt text][image14]
+#### **Label 12**
+![alt text][image15]
+#### **Label 13**
+![alt text][image16]
+#### **Label 14**
+![alt text][image17]
+#### **Label 15**
+![alt text][image18]
+#### **Label 16**
+![alt text][image19]
+#### **Label 17**
+![alt text][image20]
+#### **Label 18**
+![alt text][image21]
+#### **Label 18**
+![alt text][image22]
+#### **Label 20**
+![alt text][image23]
+#### **Label 21**
+![alt text][image24]
+#### **Label 22**
+![alt text][image25]
+#### **Label 23**
+![alt text][image26]
+#### **Label 24**
+![alt text][image27]
+#### **Label 25**
+![alt text][image28]
+#### **Label 26**
+![alt text][image29]
+#### **Label 27**
+![alt text][image30]
+#### **Label 28**
+![alt text][image31]
+#### **Label 29**
+![alt text][image32]
+#### **Label 30**
+![alt text][image33]
+#### **Label 31**
+![alt text][image34]
+#### **Label 32**
+![alt text][image35]
+#### **Label 33**
+![alt text][image36]
+#### **Label 34**
+![alt text][image37]
+#### **Label 35**
+![alt text][image38]
+#### **Label 36**
+![alt text][image39]
+#### **Label 37**
+![alt text][image40]
+#### **Label 38**
+![alt text][image41]
+#### **Label 39**
+![alt text][image42]
+#### **Label 40**
+![alt text][image43]
+#### **Label 41**
+![alt text][image44]
+#### **Label 42**
+![alt text][image45]
+
+A lot of the images are dark, blurry and have a poor resolution. There is also a mix of objects in several samples and the main objects are portraited from different perspectives. These are the kind of expected images in real scenarios. 
+
+## 2. Design, train and test a model architecture
+
+### **a. Data augmentation and image preprocessing**
+
+* Verify that the notebook from your laptop and the cloud are the same
+* Explain both of the processing techniques you used here
+* Explain the different architectures
+* Explore other solutions
 
 #### 1. Describe how you preprocessed the image data. What techniques were chosen and why did you choose these techniques? Consider including images showing the output of each preprocessing technique. Pre-processing refers to techniques such as converting to grayscale, normalization, etc. (OPTIONAL: As described in the "Stand Out Suggestions" part of the rubric, if you generated additional data for training, describe why you decided to generate additional data, how you generated the data, and provide example images of the additional data. Then describe the characteristics of the augmented training set like number of images in the set, number of images for each class, etc.)
 
