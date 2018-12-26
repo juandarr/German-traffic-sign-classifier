@@ -14,7 +14,7 @@
   - [b. Final model architecture](#b.-final-model-architecture)
   - [c. Model training](#c.-model-training)
   - [d. Final results and discussion](#d.-final-results-and-discussion)
-- [3. Test a model on new images](#test-a-model-on-new-images)
+- [3. Test a model on new images](#3.-test-a-model-on-new-images)
   - [1. Custom traffic sign images](#1-custom-traffic-sign-images)
   - [2. Model performace on the custom images](#2-model-performace-on-the-custom-images)
 - [4. Explore the feature maps and the response of different layers of stimuli](#4.-explore-the-feature-maps-and-the-response-of-different-layers-of-stimuli)
@@ -311,7 +311,7 @@ If a well known architecture was chosen:
 * How does the final model's accuracy on the training, validation and test set provide evidence that the model is working well?
  
 
-### Test a Model on New Images
+### 3. Test a model on new images
 
 #### 1. Choose five German traffic signs found on the web and provide them in the report. For each image, discuss what quality or qualities might be difficult to classify.
 
