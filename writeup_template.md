@@ -68,6 +68,8 @@
 [image43]: ./images/class_40.png "Class 40"
 [image44]: ./images/class_41.png "Class 41"
 [image45]: ./images/class_42.png "Class 42"
+[image46]: ./images/class_augmented.png "Class 36 augmented"
+[image47]: ./images/class_distribution_augmentation.png "Class distribution augmentation"
 
 ---
 ## 1. Data set summary and exploration
@@ -242,10 +244,28 @@ A lot of the images are dark, blurry and have a poor resolution. There is also a
 
 ### **a. Data augmentation and image preprocessing**
 
-* Verify that the notebook from your laptop and the cloud are the same
-* Explain both of the processing techniques you used here
-* Explain the different architectures
-* Explore other solutions
+#### Data augmentation
+
+Given the class distribution shown in image (2), where some classes have less than 500 samples while other have 1000 or more, it was clear that the augmentation of data was required so we could uniformalize the distribution and give each class an equally significant representation so the classifier can perform well for all classes. To augment the data I decide to use the python library `imgaug`, which can be explore in the following link: [**imgaug**: Image augmentation for machine learning experiments](https://github.com/aleju/imgaug).
+
+There are many augmentation techniques available for us to increase the data set size. From the long list of methods I decided to try the following ones:
+
+* **Cropping**: random crops of percentages of the image between 0 and 10%.
+* **Rotation**: random rotation between -15 and 15 degrees.
+* **Scaling**: random scaling in both axis with percentages between 80% and 120%.
+* **Translation**: random translation in both axis with percentages between -20% and 20%.
+
+The multiple transformations where then used in the whole data set. For classes with sample sizes below 1250, 4 iterations where performed increasing 4 times the data size of each class. Classes with a sample size of more than 1250 where increased with 1000 more samples obtain with the transformation methods. The following image shows some of the new images generated in the data augmentation step:
+
+![alt text][image46]
+
+The images shown are the output of transformation such as rotation, scaling, translation and cropping. For example, the image at the top left has been rotated to the right while the image at the bottom right has been scaled down in the horizontal axis. Adding a new set of images with these transformations will make the training process more powerful, offering a equally distributed sample size for each class and adding variations in terms of translation, scale, rotation and imperfection that will make the classifier more robust.
+
+The following image displays the final class sample size distribution, now almost all classes have a similar sample size.
+
+![alt text][image47]
+
+
 
 #### 1. Describe how you preprocessed the image data. What techniques were chosen and why did you choose these techniques? Consider including images showing the output of each preprocessing technique. Pre-processing refers to techniques such as converting to grayscale, normalization, etc. (OPTIONAL: As described in the "Stand Out Suggestions" part of the rubric, if you generated additional data for training, describe why you decided to generate additional data, how you generated the data, and provide example images of the additional data. Then describe the characteristics of the augmented training set like number of images in the set, number of images for each class, etc.)
 
@@ -297,6 +317,12 @@ My final model results were:
 * training set accuracy of ?
 * validation set accuracy of ? 
 * test set accuracy of ?
+
+* Verify that the notebook from your laptop and the cloud are the same
+* Explain both of the processing techniques you used here
+* Explain the different architectures
+* Explore other solutions
+
 
 If an iterative approach was chosen:
 * What was the first architecture that was tried and why was it chosen?
