@@ -1,20 +1,24 @@
-# **Traffic Sign Recognition** 
+# **Traffic Sign Recognition project** 
 
-## Writeup
+### The present work describes the rationale and design decisions behind the development of a deep convolutional neural network architecture to classify german traffic signs 
 
-### You can use this file as a template for your writeup if you want to submit it as a markdown file, but feel free to use some other method and submit a pdf if you prefer.
+## Table of Contents
 
----
+<!-- MarkdownTOC autolink="true" bracket="round"-->
 
-**Build a Traffic Sign Recognition Project**
-
-The goals / steps of this project are the following:
-* Load the data set (see below for links to the project data set)
-* Explore, summarize and visualize the data set
-* Design, train and test a model architecture
-* Use the model to make predictions on new images
-* Analyze the softmax probabilities of the new images
-* Summarize the results with a written report
+- [1. Data set summary and exploration](#1.-data-set-summary-and-exploration)
+  - [a. Load the data set and summarize](#a.-load-the-data-set-and-summarize)
+  - [b. Explore and visualize the data set](#b.-explore-and-visualize-the-data-set)
+- [2. Design, train, and test a model architecture](#2.-design,-train,-and-test-a-model-architecture)
+  - [a. Image preprocessing and augmentation](#1-image-preprocessing-and-augmentation)
+  - [b. Final model architecture](#2-final-model-architecture)
+  - [c. Model training](#3-model-training)
+  - [d. Final results and discussion](#4-final-results-and-discussion)
+- [3. Test a model on new images](#test-a-model-on-new-images)
+  - [1. Custom traffic sign images](#1-custom-traffic-sign-images)
+  - [2. Model performace on the custom images](#2-model-performace-on-the-custom-images)
+- [4. Explore the feature maps and the response of different layers of stimuli](#4.-explore-the-feature-maps-and-the-response-of-different-layers-of-stimuli)
+<!-- /MarkdownTOC -->
 
 
 [//]: # (Image References)
@@ -28,34 +32,78 @@ The goals / steps of this project are the following:
 [image7]: ./examples/placeholder.png "Traffic Sign 4"
 [image8]: ./examples/placeholder.png "Traffic Sign 5"
 
-## Rubric Points
-### Here I will consider the [rubric points](https://review.udacity.com/#!/rubrics/481/view) individually and describe how I addressed each point in my implementation.  
-
 ---
-### Writeup / README
+## 1. Data set summary and exploration
 
-#### 1. Provide a Writeup / README that includes all the rubric points and how you addressed each one. You can submit your writeup as markdown or pdf. You can use this template as a guide for writing the report. The submission includes the project code.
+### **a. Load the data set and summarize**
 
-You're reading it! and here is a link to my [project code](https://github.com/udacity/CarND-Traffic-Sign-Classifier-Project/blob/master/Traffic_Sign_Classifier.ipynb)
+I used python with the len method and the np.ndarray property shape to get an overview of sizes and shapes for the data set.
 
-### Data Set Summary & Exploration
+* The size of training set is 34799.
+* The size of the validation set is 4410.
+* The size of test set is 12630.
+* The shape of a traffic sign image is 32x32x3 (32 times 32 pixels in 3 different color channels
+ R, G and B)
+* The number of unique classes/labels in the data set is 43. 
 
-#### 1. Provide a basic summary of the data set. In the code, the analysis should be done using python, numpy and/or pandas methods rather than hardcoding results manually.
+Here is the definition of classes according to the assigned index:
 
-I used the pandas library to calculate summary statistics of the traffic
-signs data set:
+Class ID | Sign name
+--- | ---
+0|Speed limit (20km/h)
+1|Speed limit (30km/h)
+2|Speed limit (50km/h)
+3|Speed limit (60km/h)
+4|Speed limit (70km/h)
+5|Speed limit (80km/h)
+6|End of speed limit (80km/h)
+7|Speed limit (100km/h)
+8|Speed limit (120km/h)
+9|No passing
+10|No passing for vehicles over 3.5 metric tons
+11|Right-of-way at the next intersection
+12|Priority road
+13|Yield
+14|Stop
+15|No vehicles
+16|Vehicles over 3.5 metric tons prohibited
+17|No entry
+18|General caution
+19|Dangerous curve to the left
+20|Dangerous curve to the right
+21|Double curve
+22|Bumpy road
+23|Slippery road
+24|Road narrows on the right
+25|Road work
+26|Traffic signals
+27|Pedestrians
+28|Children crossing
+29|Bicycles crossing
+30|Beware of ice/snow
+31|Wild animals crossing
+32|End of all speed and passing limits
+33|Turn right ahead
+34|Turn left ahead
+35|Ahead only
+36|Go straight or right
+37|Go straight or left
+38|Keep right
+39|Keep left
+40|Roundabout mandatory
+41|End of no passing
+42|End of no passing by vehicles over 3.5 metric tons
 
-* The size of training set is ?
-* The size of the validation set is ?
-* The size of test set is ?
-* The shape of a traffic sign image is ?
-* The number of unique classes/labels in the data set is ?
 
-#### 2. Include an exploratory visualization of the dataset.
+### **b. Explore and visualize the data set** 
+
+#### Include an exploratory visualization of the dataset.
 
 Here is an exploratory visualization of the data set. It is a bar chart showing how the data ...
 
 ![alt text][image1]
+
+#### 2. Design, train and test a model architecture
 
 ### Design and Test a Model Architecture
 
@@ -78,6 +126,7 @@ Here is an example of an original image and an augmented image:
 ![alt text][image3]
 
 The difference between the original data set and the augmented data set is the following ... 
+
 
 
 #### 2. Describe what your final model architecture looks like including model type, layers, layer sizes, connectivity, etc.) Consider including a diagram and/or table describing the final model.
