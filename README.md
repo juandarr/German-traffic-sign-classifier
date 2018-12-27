@@ -9,7 +9,7 @@
 - [1. Data set summary and exploration](#1-data-set-summary-and-exploration)
   - [a. Load the data set and summarize](#a-load-the-data-set-and-summarize)
   - [b. Explore and visualize the data set](#b-explore-and-visualize-the-data-set)
-- [2. Design, train, and test a model architecture](#2-design,-train,-and-test-a-model-architecture)
+- [2. Design, train, and test a model architecture](#2-design-train-and-test-a-model-architecture)
   - [a. Data augmentation and image preprocessing](#a-data-augmentation-and-image-preprocessing)
   - [b. Final model architecture](#b-final-model-architecture)
   - [c. Model training](#c-model-training)
@@ -77,7 +77,7 @@
 [image52]: ./images/samples_augmentation_grayscale.png "Some samples after augmentation and grayscale method"
 [image53]: ./images/samples_augmentation_ychannel.png "Some samples after augmentation and Y channel method"
 [image54]: ./images/custom_test_images.png "Custom test images"
-[image55]: ./images/Custom_test_images_preprocessing.png "Custom test images preprocessed"
+[image55]: ./images/custom_test_images_preprocessing.png "Custom test images preprocessed"
 [image56]: ./images/predictions_custom_images.png "Top 5 predictions of custom set"
 [image57]: ./images/stimuli.png "Stimuli"
 [image58]: ./images/feature_maps_conv1.png "Feature maps of 1st convolutional layer"
