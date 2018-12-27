@@ -82,6 +82,8 @@
 [image57]: ./images/stimuli.png "Stimuli"
 [image58]: ./images/feature_maps_conv1.png "Feature maps of 1st convolutional layer"
 [image59]: ./images/feature_maps_conv2.png "Feature maps of 2nd convolutional layer"
+[image60]: ./images/network_performance_27_epochs.png "Network accuracy for training and validation"
+
 
 
 ---
@@ -356,7 +358,7 @@ The following table presents the hyperparameters used to train the model:
 
 | Hyperparameter | Value |
 | ---------------| --------------|
-|EPOCHS          | 100          |
+|EPOCHS          | 150          |
 | BATCH_SIZE     | 128          |
 | Learning rate  | 0.001        |
 | Dropout CNL*   | 0.7          |
@@ -373,7 +375,18 @@ My final model results were:
 * validation set accuracy of ? 97.3% 
 * test set accuracy of ? 95.1%
 
+An iterative approach was followed during this project to reach a satisfactory solution. 
+The first architecture used was Lenet 5, which was implemented in a previous chapter of the course for image classification. This network has two convolutional and max pooling sets, doesn't include dropout and incluyes three fully connected layers (considering the final layer that outputs the logits). During the first experiments no data augmentation was implemented and the data preprocessing used was the first method, grayscaling and normalizing the images. The performance achieved during this stage was about 88, 89 percent.
 
+After this initial setup, several hyperparameters were modified, the batch size was increased to 128, 256 and 512, the number of epochs was changes between 100 and 200 and I tried with different learning rates. The best one were the ones below 0.005. The architecture of the neural network was also modified. The depth of the convolutional layer was also modified, increases in their depth gave better accuracies during training and validation. The initial convolutional layers of the Lenet implementation had a depth of 6 and 16 respectively. This value was increased to 16 and 32, and finally to 32 and 64. Additional changes were defined in the output of the fully connected layers: I went from the values for the Lenet implementation, 120-84-43, to a bigger number of nodes 800-200-43 and 1000-500-43. After increases in the depth of the convolutional layer and output sizes of the fully connected layers we got improvements in accuracy between 1% and 3%.  
+
+Additional experiments were performed with a 4 convolutional layer network. The depth of the output for each layer was defined as 32-64-128-256. The output size of the fully connected was also increased to 2000 and 1000. The results were poor in this case. Training was good but validation values were bad. This is an indication that the network was overfitting during training and generalization was bad. As the number of parameters of a model architecture is increased, we also need more data to correctly train it. Maybe a bigger augmented data set can help to improve performance. 
+ 
+The best results appeared when we added an additional convolutional layer, dropout factors, augmented the data set from about 30K samples to 100K and decided to preprocess the images using the Y color channel and local/global contrast normalization. For this setup we used the standard learning rate of 0.001, epochs of 150 and a batch size of 128. 
+
+The following image shows the accuracy during training and validation:
+
+![alt text][image60]
 
 #### 4. Describe the approach taken for finding a solution and getting the validation set accuracy to be at least 0.93. Include in the discussion the results on the training, validation and test sets and where in the code these were calculated. Your approach may have been an iterative process, in which case, outline the steps you took to get to the final solution and why you chose those steps. Perhaps your solution involved an already well known implementation or architecture. In this case, discuss why you think the architecture is suitable for the current problem.
 
