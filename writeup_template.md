@@ -70,6 +70,19 @@
 [image45]: ./images/class_42.png "Class 42"
 [image46]: ./images/class_augmented.png "Class 36 augmented"
 [image47]: ./images/class_distribution_augmentation.png "Class distribution augmentation"
+[image48]: ./images/original_image_preprocessing.png "Original image before preprocessing"
+[image49]: ./images/yuv_color_space.png "YUV color space transformation"
+[image50]: ./images/preprocessing_output.png "Preprocessing output"
+[image51]: ./images/preprocessing_output_histograms.png "Preprocessing output histograms"
+[image52]: ./images/samples_augmentation_grayscale.png "Some samples after augmentation and grayscale method"
+[image53]: ./images/samples_augmentation_ychannel.png "Some samples after augmentation and Y channel method"
+[image54]: ./images/custom_test_images.png "Custom test images"
+[image55]: ./images/Custom_test_images_preprocessing.png "Custom test images preprocessed"
+[image56]: ./images/predictions_custom_images.png "Top 5 predictions of custom set"
+[image57]: ./images/stimuli.png "Stimuli"
+[image58]: ./images/feature_maps_conv1.png "Feature maps of 1st convolutional layer"
+[image59]: ./images/feature_maps_conv2.png "Feature maps of 2nd convolutional layer"
+
 
 ---
 ## 1. Data set summary and exploration
@@ -265,64 +278,104 @@ The following image displays the final class sample size distribution, now almos
 
 ![alt text][image47]
 
+After the whole process is performed, we change from a total training set of  34799 samples to 100656 samples with an average of about 2400 samples per class. 
 
+#### Preprocessing
 
-#### 1. Describe how you preprocessed the image data. What techniques were chosen and why did you choose these techniques? Consider including images showing the output of each preprocessing technique. Pre-processing refers to techniques such as converting to grayscale, normalization, etc. (OPTIONAL: As described in the "Stand Out Suggestions" part of the rubric, if you generated additional data for training, describe why you decided to generate additional data, how you generated the data, and provide example images of the additional data. Then describe the characteristics of the augmented training set like number of images in the set, number of images for each class, etc.)
+Two different preprocessing techniques were designed and implemented in code to preprocess the training data set after augmentation. In the following sections I will describe each method and show visual examples of the output.
 
-As a first step, I decided to convert the images to grayscale because ...
+##### 1. Grayscaling and normalization
 
-Here is an example of a traffic sign image before and after grayscaling.
+In this method we take the mean values for the pixels in the RGB channels, obtaining one unique pixel matrix with the channel of mean values. After this we apply normalization through the operation `(array-128.0)/128.0`.
 
-![alt text][image24]
+The following image shows an original sample and its grayscale representation. 
 
-As a last step, I normalized the image data because ...
+![alt text][image48]
 
-I decided to generate additional data because ... 
+This image has been translated from its original position in the x and y axis. It also corresponds to the label 1, Speed limit (30km/h). A final output of the grayscale image with normalization will be shown after describing the next method.  
 
-To add more data to the the data set, I used the following techniques because ... 
+##### 2. Color channel Y and local/global contrast normalization
 
-Here is an example of an original image and an augmented image:
+The original RGB image is transformed to the YUV color space. The channel Y is chosen for preprocessing and the channels U/V are discarded. Local and global contrast normalization are then applied to the Y color channel image. 
 
-![alt text][image3]
+After transforming the original RGB image to the YUV color space, we get the following representation of channels.
 
-The difference between the original data set and the augmented data set is the following ... 
+![alt text][image49]
 
+As we can see, the U and V channels lose a lot of details of the original image. For example, one of the most important patterns of the label -the number 30- is slightly visible. It is for this reason that the Y channel is preffered and the other ones are discarded.
 
+It also of interest to note that the grascale and Y channel versions of the original image are quite similar. The final preprocessing step is the one that makes them differ: relative normalization in the case of the grayscale method (1) and local/global contrast normalization when we pick the Y color channel (2).
+This observation is evident when we compare the original image and the final output after applying each method, as shown in the next image.
 
-#### 2. Describe what your final model architecture looks like including model type, layers, layer sizes, connectivity, etc.) Consider including a diagram and/or table describing the final model.
+![alt text][image50]
 
-My final model consisted of the following layers:
+A comparison of the histograms of the output image after using each method is:
+
+![alt text][image51]
+
+Clearly there is more variability in pixel intensity among the pixels of the Y channel method output. 
+The following couple of images show some of the samples of the training set after augmentation and preprocessing using each preprocessing method. 
+
+![alt text][image52]
+
+![alt text][image53]
+
+Experiments were performed with each method separatedly. The best results were obtained with the second method, picking the Y color image and then using local/global contrast normalization.
+
+### **b. Final model architecture**
+
+Here is the final architecture of the deep neural network:
 
 | Layer         		|     Description	        					| 
 |:---------------------:|:---------------------------------------------:| 
-| Input         		| 32x32x3 RGB image   							| 
-| Convolution 3x3     	| 1x1 stride, same padding, outputs 32x32x64 	|
+| Input         		| 32x32x1 monocolor image   							| 
+| Convolution 3x3     	| 1x1 stride, 'VALID' padding, outputs 30x30x32 	|
 | RELU					|												|
-| Max pooling	      	| 2x2 stride,  outputs 16x16x64 				|
-| Convolution 3x3	    | etc.      									|
-| Fully connected		| etc.        									|
-| Softmax				| etc.        									|
-|						|												|
-|						|												|
- 
+| Dropout               | Keep prob = 0.7                               |
+| Convolution 3x3     	| 1x1 stride, 'VALID' padding, outputs 28x28x64 	|
+| RELU					|												|
+| Max pooling	      	| 2x2 stride,  outputs 14x14x64 				|
+| Dropout               | Keep prob = 0.7                               |
+| Convolution 3x3     	| 1x1 stride, 'VALID' padding, outputs 12x12x128 	|
+| RELU					|												|
+| Max pooling	      	| 2x2 stride,  outputs 6x6x128      			|
+| Dropout               | Keep prob = 0.7                               |
+| Fully connected		| inputs 4608, outputs 600       				|
+| RELU				|       									|
+| Dropout               | Keep prob = 0.5                               |
+| Fully connected		| inputs 600, outputs 150       				|
+| RELU				|       									|
+| Dropout               | Keep prob = 0.5                               |
+| Logits				| inputs 150, outputs 43						|
 
+This final output is in the form of logits, which are fed to a cost function using the softmax function (mean cross entropy with softmax).
 
-#### 3. Describe how you trained your model. The discussion can include the type of optimizer, the batch size, number of epochs and any hyperparameters such as learning rate.
+### **c. Model training**
 
-To train the model, I used an ....
+The following table presents the hyperparameters used to train the model:
 
-#### 4. Describe the approach taken for finding a solution and getting the validation set accuracy to be at least 0.93. Include in the discussion the results on the training, validation and test sets and where in the code these were calculated. Your approach may have been an iterative process, in which case, outline the steps you took to get to the final solution and why you chose those steps. Perhaps your solution involved an already well known implementation or architecture. In this case, discuss why you think the architecture is suitable for the current problem.
+| Hyperparameter | Value |
+| ---------------| --------------|
+|EPOCHS          | 100          |
+| BATCH_SIZE     | 128          |
+| Learning rate  | 0.001        |
+| Dropout CNL*   | 0.7          |
+| Dropout FCL*     | 0.5          |
+
+`CNL stands for Convolution Neural Layer and FCL for Fully Connected Layer`.
+
+The optimizer used was AdamOptimizer.
+
+### **d. Final results and discussion**
 
 My final model results were:
-* training set accuracy of ?
-* validation set accuracy of ? 
-* test set accuracy of ?
+* training set accuracy of ? 99%
+* validation set accuracy of ? 97.3% 
+* test set accuracy of ? 95.1%
 
-* Verify that the notebook from your laptop and the cloud are the same
-* Explain both of the processing techniques you used here
-* Explain the different architectures
-* Explore other solutions
 
+
+#### 4. Describe the approach taken for finding a solution and getting the validation set accuracy to be at least 0.93. Include in the discussion the results on the training, validation and test sets and where in the code these were calculated. Your approach may have been an iterative process, in which case, outline the steps you took to get to the final solution and why you chose those steps. Perhaps your solution involved an already well known implementation or architecture. In this case, discuss why you think the architecture is suitable for the current problem.
 
 If an iterative approach was chosen:
 * What was the first architecture that was tried and why was it chosen?
@@ -336,51 +389,63 @@ If a well known architecture was chosen:
 * Why did you believe it would be relevant to the traffic sign application?
 * How does the final model's accuracy on the training, validation and test set provide evidence that the model is working well?
  
+### **3. Test a model on new images**
 
-### 3. Test a model on new images
+#### **1. Custom traffic sign images**
 
-#### 1. Choose five German traffic signs found on the web and provide them in the report. For each image, discuss what quality or qualities might be difficult to classify.
+For each image, discuss what quality or qualities might be difficult to classify.
 
-Here are five German traffic signs that I found on the web:
+The following figures pack the set of customs images to analyze. The first one correspond to the original RGB image, and the second one shows the images after preprocessing using the Y channel and local/global contrast normalization.
 
-![alt text][image4] ![alt text][image5] ![alt text][image6] 
-![alt text][image7] ![alt text][image8]
+![alt text][image54]
 
-The first image might be difficult to classify because ...
+![alt text][image55]
 
-#### 2. Discuss the model's predictions on these new traffic signs and compare the results to predicting on the test set. At a minimum, discuss what the predictions were, the accuracy on these new predictions, and compare the accuracy to the accuracy on the test set (OPTIONAL: Discuss the results in more detail as described in the "Stand Out Suggestions" part of the rubric).
+These images are quite clean. From the training , validation and testing performance we should expect to get a classification accuracy close to 100%. Compared with the images from the test set these images are centered, without changes in perspective, with high contrast, the patterns are free noise and clearly identifiable. We'll see how we score in the real test in the following section.  
 
-Here are the results of the prediction:
+
+#### **2. Model performace on the custom images**
+
+(OPTIONAL: Discuss the results in more detail as described in the "Stand Out Suggestions" part of the rubric).
+
+The following are the results of the preditions:
 
 | Image			        |     Prediction	        					| 
 |:---------------------:|:---------------------------------------------:| 
-| Stop Sign      		| Stop sign   									| 
-| U-turn     			| U-turn 										|
-| Yield					| Yield											|
-| 100 km/h	      		| Bumpy Road					 				|
-| Slippery Road			| Slippery Road      							|
+| Priority road      			|  Priority road 										|
+| Stop       		    | Stop     									| 
+| Children crossing				| 	Children crossing									|
+| Speed limit (60km/h)   		| Speed limit (60km/h) 				 				|
+| Road work			|      Road work							|
 
+The model was able to predict the whole custom data set. The accuracy predicting the test set was about 95.1%, so we should expect a close value in the current test, more considering that the images included in this custom test set are an easy target if the deep network has been properly trained. This is the case, the performance is 100%. 
 
-The model was able to correctly guess 4 of the 5 traffic signs, which gives an accuracy of 80%. This compares favorably to the accuracy on the test set of ...
+#### Top 5 softmax probabilities of each image in the custom set
 
-#### 3. Describe how certain the model is when predicting on each of the five new images by looking at the softmax probabilities for each prediction. Provide the top 5 softmax probabilities for each image along with the sign type of each probability. (OPTIONAL: as described in the "Stand Out Suggestions" part of the rubric, visualizations can also be provided such as bar charts)
+To make the prediction of the top 5 softmax probabilities I used the `tf.nn.softmax()` function with `tf.nn.top_k(softmax_values, k = 5)`. After performing these operations (implemented in the jupyter notebook) we get the following representations:
 
-The code for making predictions on my final model is located in the 11th cell of the Ipython notebook.
+![alt text][image56]
 
-For the first image, the model is relatively sure that this is a stop sign (probability of 0.6), and the image does contain a stop sign. The top five soft max probabilities were
+* Verify that the notebook from your laptop and the cloud are the same
+* Explain both of the processing techniques you used here
+* Explain the different architectures
+* Explore other solutions
 
-| Probability         	|     Prediction	        					| 
-|:---------------------:|:---------------------------------------------:| 
-| .60         			| Stop sign   									| 
-| .20     				| U-turn 										|
-| .05					| Yield											|
-| .04	      			| Bumpy Road					 				|
-| .01				    | Slippery Road      							|
+### **4. Explore the feature maps and the response of different layers of stimuli**
 
+Lets explore the feature maps in the deep neural networks. We have three convolutional layers in the neural network. We know that as we go deeper in the network the number of filters increases and we get access to more complex patterns. Starting with simple geometrical features such as lines, edges and points in the first convolutional layer to circles, squares and curves in the layer that follows and finally, complex patterns such as faces, car/house shapes and more moving deeper in the network. However, since we are using two max pooling layer here and since the original image size is 32x32 pixels, after we apply two of them we will downsize the matrix image to half of the output of the first convolution, and then half of the output of the second convolution, we lose a lot of visual details here that can be discerned with the feature maps. Therefore, we will focus only in the first two convolutions.
+Here is the input image we will use as the stimuli:
 
-For the second image ... 
+![alt text][image57]
 
-### (Optional) Visualizing the Neural Network (See Step 4 of the Ipython notebook for more details)
-#### 1. Discuss the visual output of your trained network's feature maps. What characteristics did the neural network use to make classifications?
+The following are the feature maps in the first convolutional layer after using the first image of the custom set as stimuli:
+
+![alt text][image58]
+
+and the response after using the same stimuli in the second convolutional layer:
+
+![alt text][image59]
+
+In the feature maps of the first convolutional layer we see the network is sensible to lines. There are a lot of activations in adyacent pixels forming lines in the response. This is a good sign since the input image has lines in it, defining rotated squares. The second convolutional layer response, which has been halved by the max pooling layer, has less resolution , but it appears to have a preference for curves and triangles in the corners. The feature maps of the third convolutional network have a resolution of 6x6 pixels and are not as interesting as the previous maps. I will ingnore them in this discussion.
 
 
