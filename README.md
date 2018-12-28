@@ -6,7 +6,7 @@
 
 <!-- MarkdownTOC autolink="true" bracket="round"-->
 
-- [1. Dataset summary and exploration](#1-data-set-summary-and-exploration)
+- [1. Dataset summary and exploration](#1-dataset-summary-and-exploration)
   - [a. Load the data set and summarize](#a-load-the-data-set-and-summarize)
   - [b. Explore and visualize the data set](#b-explore-and-visualize-the-data-set)
 - [2. Design, train, and test a model architecture](#2-design-train-and-test-a-model-architecture)
@@ -16,7 +16,7 @@
   - [d. Final results and discussion](#d-final-results-and-discussion)
 - [3. Test a model on new images](#3-test-a-model-on-new-images)
   - [1. Custom traffic sign images](#1-custom-traffic-sign-images)
-  - [2. Model performance on the custom images](#2-model-performace-on-the-custom-images)
+  - [2. Model performance on the custom images](#2-model-performance-on-the-custom-images)
 - [4. Explore the feature maps and the response of different layers of stimuli](#4-explore-the-feature-maps-and-the-response-of-different-layers-of-stimuli)
 <!-- /MarkdownTOC -->
 
