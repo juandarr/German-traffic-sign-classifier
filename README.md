@@ -425,11 +425,6 @@ To make the prediction of the top 5 softmax probabilities I used the `tf.nn.soft
 
 ![alt text][image56]
 
-* Verify that the notebook from your laptop and the cloud are the same
-* Explain both of the processing techniques you used here
-* Explain the different architectures
-* Explore other solutions
-
 ### **4. Explore the feature maps and the response of different layers of stimuli**
 
 Lets explore the feature maps in the deep neural networks. We have three convolutional layers in the neural network. We know that as we go deeper in the network the number of filters increases and we get access to more complex patterns. Starting with simple geometrical features such as lines, edges and points in the first convolutional layer to circles, squares and curves in the layer that follows and finally, complex patterns such as faces, car/house shapes and more moving deeper in the network. However, since we are using two max pooling layer here and since the original image size is 32x32 pixels, after we apply two of them we will downsize the matrix image to half of the output of the first convolution, and then half of the output of the second convolution, we lose a lot of visual details here that can be discerned with the feature maps. Therefore, we will focus only in the first two convolutions.
