@@ -1,2 +1,2 @@
-model_checkpoint_path: "Cnet_3conv_test"
-all_model_checkpoint_paths: "Cnet_3conv_test"
+model_checkpoint_path: "Cnet_3conv_y_0001"
+all_model_checkpoint_paths: "Cnet_3conv_y_0001"

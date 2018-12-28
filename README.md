@@ -6,7 +6,7 @@
 
 <!-- MarkdownTOC autolink="true" bracket="round"-->
 
-- [1. Data set summary and exploration](#1-data-set-summary-and-exploration)
+- [1. Dataset summary and exploration](#1-data-set-summary-and-exploration)
   - [a. Load the data set and summarize](#a-load-the-data-set-and-summarize)
   - [b. Explore and visualize the data set](#b-explore-and-visualize-the-data-set)
 - [2. Design, train, and test a model architecture](#2-design-train-and-test-a-model-architecture)
@@ -16,7 +16,7 @@
   - [d. Final results and discussion](#d-final-results-and-discussion)
 - [3. Test a model on new images](#3-test-a-model-on-new-images)
   - [1. Custom traffic sign images](#1-custom-traffic-sign-images)
-  - [2. Model performace on the custom images](#2-model-performace-on-the-custom-images)
+  - [2. Model performance on the custom images](#2-model-performace-on-the-custom-images)
 - [4. Explore the feature maps and the response of different layers of stimuli](#4-explore-the-feature-maps-and-the-response-of-different-layers-of-stimuli)
 <!-- /MarkdownTOC -->
 
@@ -82,16 +82,16 @@
 [image57]: ./images/stimuli.png "Stimuli"
 [image58]: ./images/feature_maps_conv1.png "Feature maps of 1st convolutional layer"
 [image59]: ./images/feature_maps_conv2.png "Feature maps of 2nd convolutional layer"
-[image60]: ./images/network_performance_150_epochs.png "Network accuracy for training and validation"
+[image60]: ./images/network_performance_200_epochs.png "Network accuracy for training and validation"
 
 
 
 ---
-## 1. Data set summary and exploration
+## 1. Dataset summary and exploration
 
 ### **a. Load the data set and summarize**
 
-I used python with the len method and the np.ndarray property shape to get an overview of sizes and shapes for the data set.
+I used python with the `len()` method and the `np.ndarray` property shape to get an overview of sizes and shapes for the dataset.
 
 * The size of training set is 34799.
 * The size of the validation set is 4410.
@@ -162,95 +162,95 @@ The following chart shows the class distribution among the total set of training
 
 ![alt text][image2]
 
-As you can see, a lot of classes have a sample size of less than 500. This is problematic since compared to other classes with 1000 or more samples, that class will get less representative data to train a robust classifier able to discriminate it in scenarios where inputs are different from those in the samples. One way to solve is data augmentation, which will use to multiply the number of representative data for those classes, and will be used in all classes to create images with significant variations in lightness, image position, image scale and image rotation. 
+As you can see, a lot of classes have a sample size of less than 500. This is problematic since compared to other classes with 1000 or more samples, that class will get less representative data to train a robust classifier able to discriminate it in scenarios where inputs are different from those in the samples. One way to solve is data augmentation, which will use to multiply the number of representative data for those classes, and will be used in all classes to create images with significant variations in lightness, image position, image scale, and image rotation. 
 
-Finally, lets explore the images representing each class. An exploration of each class will allows us to get an idea of the quality of the data and the kind of transformations we could apply to improve the performance of the training/testing pipelines. 
+Finally, let's explore the images representing each class. An exploration of each class will allow us to get an idea of the quality of the data and the kind of transformations we could apply to improve the performance of the training/testing pipelines. 
 
-#### **Label 0**
+
 ![alt text][image3]
-#### **Label 1**
+
 ![alt text][image4]
-#### **Label 2**
+
 ![alt text][image5]
-#### **Label 3**
+
 ![alt text][image6]
-#### **Label 4**
+
 ![alt text][image7]
-#### **Label 5**
+
 ![alt text][image8]
-#### **Label 6**
+
 ![alt text][image9]
-#### **Label 7**
+
 ![alt text][image10]
-#### **Label 8**
+
 ![alt text][image11]
-#### **Label 9**
+
 ![alt text][image12]
-#### **Label 10**
+
 ![alt text][image13]
-#### **Label 11**
+
 ![alt text][image14]
-#### **Label 12**
+
 ![alt text][image15]
-#### **Label 13**
+
 ![alt text][image16]
-#### **Label 14**
+
 ![alt text][image17]
-#### **Label 15**
+
 ![alt text][image18]
-#### **Label 16**
+
 ![alt text][image19]
-#### **Label 17**
+
 ![alt text][image20]
-#### **Label 18**
+
 ![alt text][image21]
-#### **Label 18**
+
 ![alt text][image22]
-#### **Label 20**
+
 ![alt text][image23]
-#### **Label 21**
+
 ![alt text][image24]
-#### **Label 22**
+
 ![alt text][image25]
-#### **Label 23**
+
 ![alt text][image26]
-#### **Label 24**
+
 ![alt text][image27]
-#### **Label 25**
+
 ![alt text][image28]
-#### **Label 26**
+
 ![alt text][image29]
-#### **Label 27**
+
 ![alt text][image30]
-#### **Label 28**
+
 ![alt text][image31]
-#### **Label 29**
+
 ![alt text][image32]
-#### **Label 30**
+
 ![alt text][image33]
-#### **Label 31**
+
 ![alt text][image34]
-#### **Label 32**
+
 ![alt text][image35]
-#### **Label 33**
+
 ![alt text][image36]
-#### **Label 34**
+
 ![alt text][image37]
-#### **Label 35**
+
 ![alt text][image38]
-#### **Label 36**
+
 ![alt text][image39]
-#### **Label 37**
+
 ![alt text][image40]
-#### **Label 38**
+
 ![alt text][image41]
-#### **Label 39**
+
 ![alt text][image42]
-#### **Label 40**
+
 ![alt text][image43]
-#### **Label 41**
+
 ![alt text][image44]
-#### **Label 42**
+
 ![alt text][image45]
 
 A lot of the images are dark, blurry and have a poor resolution. There is also a mix of objects in several samples and the main objects are portraited from different perspectives. These are the kind of expected images in real scenarios. 
@@ -261,7 +261,7 @@ A lot of the images are dark, blurry and have a poor resolution. There is also a
 
 #### Data augmentation
 
-Given the class distribution shown in image (2), where some classes have less than 500 samples while other have 1000 or more, it was clear that the augmentation of data was required so we could uniformalize the distribution and give each class an equally significant representation so the classifier can perform well for all classes. To augment the data I decide to use the python library `imgaug`, which can be explore in the following link: [**imgaug**: Image augmentation for machine learning experiments](https://github.com/aleju/imgaug).
+The class distribution profile shown in the previous section has classes with less than 500 samples while others have 1000 or more. It was clear that the augmentation of data was required so we could uniformize the distribution and give each class an equally significant representation so the classifier can perform well for all classes. To augment the data I decided to use the python library `imgaug`, here is a link to its Github repository: [**imgaug**: Image augmentation for machine learning experiments](https://github.com/aleju/imgaug).
 
 There are many augmentation techniques available for us to increase the data set size. From the long list of methods I decided to try the following ones:
 
@@ -270,11 +270,11 @@ There are many augmentation techniques available for us to increase the data set
 * **Scaling**: random scaling in both axis with percentages between 80% and 120%.
 * **Translation**: random translation in both axis with percentages between -20% and 20%.
 
-The multiple transformations where then used in the whole data set. For classes with sample sizes below 1250, 4 iterations where performed increasing 4 times the data size of each class. Classes with a sample size of more than 1250 where increased with 1000 more samples obtain with the transformation methods. The following image shows some of the new images generated in the data augmentation step:
+The multiple transformations where then used in the whole data set. For classes with sample sizes below 1250, 4 iterations where performed increasing 4 times the data size of each class. Classes with a sample size of more than 1250 where increased with 1000 more samples obtained with the transformation methods. The following image shows some of the new images generated in the data augmentation step:
 
 ![alt text][image46]
 
-The images shown are the output of transformation such as rotation, scaling, translation and cropping. For example, the image at the top left has been rotated to the right while the image at the bottom right has been scaled down in the horizontal axis. Adding a new set of images with these transformations will make the training process more powerful, offering a equally distributed sample size for each class and adding variations in terms of translation, scale, rotation and imperfection that will make the classifier more robust.
+The images shown are the output of transformation such as rotation, scaling, translation, and cropping. For example, the image at the top left has been rotated to the right while the image at the bottom right has been scaled down in the horizontal axis. Adding a new set of images with these transformations will make the training process more powerful, offering an equally distributed sample size for each class and adding variations in terms of translation, scale, rotation and imperfection that will make the classifier more robust.
 
 The following image displays the final class sample size distribution, now almost all classes have a similar sample size.
 
@@ -284,29 +284,29 @@ After the whole process is performed, we change from a total training set of  34
 
 #### Preprocessing
 
-Two different preprocessing techniques were designed and implemented in code to preprocess the training data set after augmentation. In the following sections I will describe each method and show visual examples of the output.
+Two different preprocessing techniques were designed and implemented in code to preprocess the training data set after augmentation. In the following sections, I will describe each method and show visual examples of the output.
 
 ##### 1. Grayscaling and normalization
 
-In this method we take the mean values for the pixels in the RGB channels, obtaining one unique pixel matrix with the channel of mean values. After this we apply normalization through the operation `(array-128.0)/128.0`.
+In this method we take the mean values for the pixels in the RGB channels, obtaining one unique pixel matrix with the channel of mean values. After this, we apply normalization through the operation `(array-128.0)/128.0`.
 
 The following image shows an original sample and its grayscale representation. 
 
 ![alt text][image48]
 
-This image has been translated from its original position in the x and y axis. It also corresponds to the label 1, Speed limit (30km/h). A final output of the grayscale image with normalization will be shown after describing the next method.  
+This image has been translated from its original position in the x and y-axis. It also corresponds to the label 1, Speed limit (30km/h). A final output of the grayscale image with normalization will be shown after describing the next method.  
 
 ##### 2. Color channel Y and local/global contrast normalization
 
-The original RGB image is transformed to the YUV color space. The channel Y is chosen for preprocessing and the channels U/V are discarded. Local and global contrast normalization are then applied to the Y color channel image. 
+The original RGB image is transformed to the YUV color space. The channel Y is chosen for preprocessing and the channels U/V are discarded. Local and global contrast normalizations are then applied to the Y color channel image. 
 
-After transforming the original RGB image to the YUV color space, we get the following representation of channels.
+After transforming the original RGB image into the YUV color space, we get the following representation of channels.
 
 ![alt text][image49]
 
-As we can see, the U and V channels lose a lot of details of the original image. For example, one of the most important patterns of the label -the number 30- is slightly visible. It is for this reason that the Y channel is preffered and the other ones are discarded.
+As we can see, the U and V channels lose a lot of details of the original image. For example, one of the most important patterns of the label -number 30- is slightly visible. It is for this reason that the Y channel is preferred and the other ones are discarded.
 
-It also of interest to note that the grascale and Y channel versions of the original image are quite similar. The final preprocessing step is the one that makes them differ: relative normalization in the case of the grayscale method (1) and local/global contrast normalization when we pick the Y color channel (2).
+It also of interest to note that the grayscale and Y channel versions of the original image are quite similar. The final preprocessing step is the one that makes them differ: relative normalization in the case of the grayscale method (1) and local/global contrast normalization when we pick the Y color channel (2).
 This observation is evident when we compare the original image and the final output after applying each method, as shown in the next image.
 
 ![alt text][image50]
@@ -315,14 +315,14 @@ A comparison of the histograms of the output image after using each method is:
 
 ![alt text][image51]
 
-Clearly there is more variability in pixel intensity among the pixels of the Y channel method output. 
+Clearly, there is more variability in pixel intensity among the pixels of the Y channel method output. 
 The following couple of images show some of the samples of the training set after augmentation and preprocessing using each preprocessing method. 
 
 ![alt text][image52]
 
 ![alt text][image53]
 
-Experiments were performed with each method separatedly. The best results were obtained with the second method, picking the Y color image and then using local/global contrast normalization.
+Experiments were performed with each method separately. The best results were obtained with the second method, picking the Y color image and then using local/global contrast normalization.
 
 ### **b. Final model architecture**
 
@@ -358,7 +358,7 @@ The following table presents the hyperparameters used to train the model:
 
 | Hyperparameter | Value |
 | ---------------| --------------|
-|EPOCHS          | 150          |
+|EPOCHS          | 200          |
 | BATCH_SIZE     | 128          |
 | Learning rate  | 0.001        |
 | Dropout CNL*   | 0.7          |
@@ -371,20 +371,20 @@ The optimizer used was AdamOptimizer.
 ### **d. Final results and discussion**
 
 My final model results were:
-* training set accuracy of ? 98.1%
+* training set accuracy of ? 98.4%
 * validation set accuracy of ? 97.2% 
-* test set accuracy of ? 94.6%
+* test set accuracy of ? 94.9%
 
 An iterative approach was followed during this project to reach a satisfactory solution. 
-The first architecture used was Lenet 5, which was implemented in a previous chapter of the course for image classification. This network has two convolutional and max pooling sets, doesn't include dropout and incluyes three fully connected layers (considering the final layer that outputs the logits). During the first experiments no data augmentation was implemented and the data preprocessing used was the first method, grayscaling and normalizing the images. The performance achieved during this stage was about 88, 89 percent.
+The first architecture used was Lenet 5, which was implemented in a previous chapter of the course for image classification. This network has two convolutional and max-pooling sets. It also doesn't have dropout and includes three fully connected layers (considering the final layer that outputs the logits). During the first experiments no data augmentation was implemented and the data preprocessing used was the first method, grayscaling and normalizing the images. The performance achieved during this stage was about 88, 89 percent.
 
-After this initial setup, several hyperparameters were modified, the batch size was increased to 128, 256 and 512, the number of epochs was changes between 100 and 200 and I tried with different learning rates. The best one were the ones below 0.005. The architecture of the neural network was also modified. The depth of the convolutional layer was also modified, increases in their depth gave better accuracies during training and validation. The initial convolutional layers of the Lenet implementation had a depth of 6 and 16 respectively. This value was increased to 16 and 32, and finally to 32 and 64. Additional changes were defined in the output of the fully connected layers: I went from the values for the Lenet implementation, 120-84-43, to a bigger number of nodes 800-200-43 and 1000-500-43. After increases in the depth of the convolutional layer and output sizes of the fully connected layers we got improvements in accuracy between 1% and 3%.  
+After this initial setup, several hyperparameters were modified, the batch size was increased to 128, 256 and 512, the number of epochs was changed between 100 and 200 and I tried with different learning rates. The best ones were the values below 0.005. The architecture of the neural network was also modified. The depth of the convolutional layer was also modified, increases in their depth gave better accuracies during training and validation. The initial convolutional layers of the Lenet implementation had a depth of 6 and 16 respectively. This value was increased to 16 and 32, and finally to 32 and 64. Additional changes were defined in the output of the fully connected layers: I went from the values for the Lenet implementation, 120-84-43, to a bigger number of nodes 800-200-43 and 1000-500-43. After increases in the depth of the convolutional layer and output sizes of the fully connected layers, we got improvements in validaction accuracy between 1% and 3%.  
 
 Additional experiments were performed with a 4 convolutional layer network. The depth of the output for each layer was defined as 32-64-128-256. The output size of the fully connected was also increased to 2000 and 1000. The results were poor in this case. Training was good but validation values were bad. This is an indication that the network was overfitting during training and generalization was bad. As the number of parameters of a model architecture is increased, we also need more data to correctly train it. Maybe a bigger augmented data set can help to improve performance. 
 
-The best results appeared when we added an additional convolutional layer, dropout factors, augmented the data set from about 30K samples to 100K and decided to preprocess the images using the Y color channel and local/global contrast normalization. For this setup we used the standard learning rate of 0.001, epochs of 150 and a batch size of 128. 
+The best results appeared when we added an additional convolutional layer, dropout factors, augmented the data set from about 30K samples to 100K and decided to preprocess the images using the Y color channel and local/global contrast normalization. For this setup, we used the standard learning rate of 0.001, epochs of 200 and a batch size of 128. 
 
-The following image shows the accuracy during training and validation of the final model during 150 epochs, with a learning rate of 0.001, augmented trainint set size of 100K samples, preprocessed with Y color channel and local/global contrast normalization and the final network architecture described in previous sections. 
+The following image shows the accuracy during training and validation of the final model during 200 epochs, with a learning rate of 0.001, augmented training set size of 100K samples, preprocessed with Y color channel and local/global contrast normalization and the final network architecture described in previous sections. 
 
 ![alt text][image60]
  
@@ -394,20 +394,20 @@ The following image shows the accuracy during training and validation of the fin
 
 For each image, discuss what quality or qualities might be difficult to classify.
 
-The following figures pack the set of customs images to analyze. The first one correspond to the original RGB image, and the second one shows the images after preprocessing using the Y channel and local/global contrast normalization.
+The following figures pack the set of customs images to analyze. The first one corresponds to the original RGB image, and the second one shows the images after preprocessing using the Y channel and local/global contrast normalization.
 
 ![alt text][image54]
 
 ![alt text][image55]
 
-These images are quite clean. From the training , validation and testing performance we should expect to get a classification accuracy close to 100%. Compared with the images from the test set these images are centered, without changes in perspective, with high contrast, the patterns are free noise and clearly identifiable. We'll see how we score in the real test in the following section.  
+These images are quite clean. From the training, validation, and testing performance we should expect to get a classification accuracy close to 100%. Compared with the images from the test set these images are centered, without changes in perspective, with high contrast, the patterns are free noise and clearly identifiable. We'll see how we score in the real test in the following section.  
 
 
-#### **2. Model performace on the custom images**
+#### **2. Model performance on the custom images**
 
 (OPTIONAL: Discuss the results in more detail as described in the "Stand Out Suggestions" part of the rubric).
 
-The following are the results of the preditions:
+The following are the results of the predictions:
 
 | Image			        |     Prediction	        					| 
 |:---------------------:|:---------------------------------------------:| 
@@ -427,7 +427,7 @@ To make the prediction of the top 5 softmax probabilities I used the `tf.nn.soft
 
 ### **4. Explore the feature maps and the response of different layers of stimuli**
 
-Lets explore the feature maps in the deep neural networks. We have three convolutional layers in the neural network. We know that as we go deeper in the network the number of filters increases and we get access to more complex patterns. Starting with simple geometrical features such as lines, edges and points in the first convolutional layer to circles, squares and curves in the layer that follows and finally, complex patterns such as faces, car/house shapes and more moving deeper in the network. However, since we are using two max pooling layer here and since the original image size is 32x32 pixels, after we apply two of them we will downsize the matrix image to half of the output of the first convolution, and then half of the output of the second convolution, we lose a lot of visual details here that can be discerned with the feature maps. Therefore, we will focus only in the first two convolutions.
+Let's explore the feature maps in the deep neural networks. We have three convolutional layers in the neural network. We know that as we go deeper into the network the number of filters increases and we get access to more complex patterns. Starting with simple geometrical features such as lines, edges and points in the first convolutional layer to circles, squares and curves in the layer that follows and finally, complex patterns such as faces, car/house shapes and more moving deeper in the network. However, since we are using two max pooling layer here and since the original image size is 32x32 pixels, after we apply two of them we will downsize the matrix image to half of the output of the first convolution, and then half of the output of the second convolution, we lose a lot of visual details here that can be discerned with the feature maps. Therefore, we will focus only on the first two convolutions.
 Here is the input image we will use as the stimuli:
 
 ![alt text][image57]
@@ -440,6 +440,6 @@ and the response after using the same stimuli in the second convolutional layer:
 
 ![alt text][image59]
 
-In the feature maps of the first convolutional layer we see the network is sensible to lines. There are a lot of activations in adyacent pixels forming lines in the response. This is a good sign since the input image has lines in it, defining rotated squares. The second convolutional layer response, which has been halved by the max pooling layer, has less resolution , but it appears to have a preference for curves and triangles in the corners. The feature maps of the third convolutional network have a resolution of 6x6 pixels and are not as interesting as the previous maps. I will ingnore them in this discussion.
+In the feature maps of the first convolutional layer, we see the network is sensible to lines. There are a lot of activations in adjacent pixels forming lines in the response. This is a good sign since the input image has lines in it, defining rotated squares. The second convolutional layer response, which has been halved by the max pooling layer, has less resolution, but it appears to have a preference for curves and triangles in the corners. The feature maps of the third convolutional network have a resolution of 6x6 pixels and are not as interesting as the previous maps. I will ignore them in this discussion.
 
 
